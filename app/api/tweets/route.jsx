@@ -2,7 +2,6 @@ import { connectDB } from "@/lib/mongoose";
 import Tweet from "@/lib/models/Tweet";
 import User from "@/lib/models/User";
 
-
 export async function GET() {
   await connectDB();
   const tweets = await Tweet.find()

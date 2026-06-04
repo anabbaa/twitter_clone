@@ -1,13 +1,21 @@
 //import { card, pageLayout } from "@/style/globalStyles";
 import React from "react";
 
-const TwitterCard = ({ twitter }) => {
-  const { id, title, body } = twitter;
+const TwitterCard = ({ tweet }) => {
+  const {  author , content , media } = tweet;
+  console.log(tweet.author.avatar
+
+  )
   return (
     <div  >
-      <h2 >{title}</h2>
-      <p >{body}</p>
-      <small>ID: {id}</small>
+
+      <img 
+      src={author?.avatar}
+      />
+
+       <h2>{author?.name}</h2>
+      <p>@{author?.handle}</p>
+      <p>{content}</p>
     </div>
   );
 };
