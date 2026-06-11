@@ -1,7 +1,6 @@
-import { connectDB } from "@/lib/mongoose";
-import Tweet from "@/lib/models/Tweet";
-import User from "@/lib/models/User";
 
+
+{/*}
 export async function GET() {
   await connectDB();
   const tweets = await Tweet.find()
@@ -72,7 +71,7 @@ export async function POST(request) {
 
   // Note: Code cuts off here in the screenshot, but you would typically 
   // save the new Tweet linking this user._id right after this step.
-}
+
 
 
 

@@ -3,14 +3,18 @@ import React, { useState,  useRef} from "react"
 import { FaTwitter } from "react-icons/fa"
 import Button from "@/app/components/Button"
 import { useRouter } from "next/navigation"
+import { FaEye , FaEyeSlash } from "react-icons/fa6";
 
 const SignUp = () => {
+    const [showPassword , setShowPassword ] = useState(false)
 const [formData, setFormData] = useState({
     name: "",
     email: "",
     password: "",
+    confirmPassword: "",
     handle: ""
 })
+
 const [avatarFile, setAvatarFile] = useState(null);
 const [avatarPreview, setAvatarPreview] = useState(null);
 
@@ -41,45 +45,67 @@ const handleChange = (e) => {
     })
     setError("")
 }
-
 const handleSubmit = async (e) => {
-    e.preventDefault()
-    const {name , email , password , handle} = formData;
-    if (!name || !email || !password || !handle ){
-        setError("All fields are required.")
-        return
+    e.preventDefault();
+
+    const { name, email, password, handle , confirmPassword } = formData;
+
+    if (!name || !email || !password || !handle ) {
+    setError("name , email , password and username are required.");
+    return;
 }
 
-    setLoading(true)
-    try {
-    const res = await fetch("/api/users", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-            ...formData,
-            avatar: avatarPreview || ""
-})
-    })
+if (password  !== confirmPassword) {
+    setError("password is not match")
+return ;
+}
 
-    const data = await res.json()
+setLoading(true);
+
+try {
+    //formData is an object from the browser its fumction to send files to server
+    // file is a JavaScript File object coming from an <input type="file" />.
+    //in formData we do not need headers browser handle everything
+
+    const data = new FormData();
+
+    data.append("name", name);
+    data.append("email", email);
+    data.append("password", password);
+    data.append("confirmPassword", confirmPassword)
+    data.append("handle", handle);
+    if (avatarFile) {
+    data.append("avatar", avatarFile);
+}
+    if (avatarFile)  data.append("avatar", avatarFile);
+        
+    const res = await fetch("/api/signup", {
+        method: "POST",
+        body: data, 
+    });
+
+    const result = await res.json();
 
     if (!res.ok) {
-        setError(data.message || "Something went wrong.")
+        setError(result.message || "Unexpected error occurred");
+        return;
     } else {
-        
-        console.log("Signed up successfully:", data)
-        router.push("/signin")
+        console.log("Signed up successfully:", result);
+        router.push("/signin");
     }
-    } catch (err) {
-      console.error(err)
-  setError(err.message)
-    } finally {
-    setLoading(false)
-    }
+} catch (err) {
+    console.error(err);
+    setError(err.message);
+} finally {
+    setLoading(false);
 }
+};
 
+const handleShowPassword = () => {
+setShowPassword((prev) => !prev);
+};
 return (
-    <div className="h-[80vh] flex flex-col justify-center items-center gap-4">
+    <div className="h-[85vh] flex flex-col justify-center items-center gap-2">
         <span>
         <FaTwitter size={40} />
         </span>
@@ -89,6 +115,9 @@ return (
         onSubmit={handleSubmit}
         className="flex flex-col gap-3 w-full max-w-sm">
 
+<label className="mb-1 text-sm">
+    require <span className="text-red-500">*</span>
+</label>
         <input
         type="text"
         name="name"
@@ -98,7 +127,9 @@ return (
         className="border border-gray-300 rounded-full px-5 py-3 text-sm outline-none
         focus:border-sky-500 transition"
         />
-
+<label className="mb-1 text-sm">
+    require <span className="text-red-500">*</span>
+</label>
         <input
         type="email"
         name="email"
@@ -108,16 +139,53 @@ return (
         className="border border-gray-300 rounded-full px-5 py-3 text-sm outline-none 
         focus:border-sky-500 transition"
         />
+        <div className="flex flex-col">
+        <label className="mb-1 text-sm">
+        require <span className="text-red-500">*</span>
+        </label>
+
+        <div className="flex flex-row">
 
         <input
-        type="password"
+        type={showPassword ? "tetx":"password"}
         name="password"
         placeholder="Password"
         value={formData.password}
         onChange={handleChange}
-        className="border border-gray-300 rounded-full px-5 py-3 text-sm outline-none
+        className="w-100 border border-gray-300 rounded-full px-5 py-3 text-sm outline-none
         focus:border-sky-500 transition"
         />
+        <button 
+        type="button"
+        onClick={handleShowPassword}>
+        {showPassword ? <FaEye />: <FaEyeSlash />  }</button>
+        </div>
+        </div>
+
+        <div className="flex flex-col">
+        <label className="mb-1 text-sm">
+            require  <span className="text-red-500">*</span>
+        </label>
+        <div className="flex flex-row">
+        <input
+        type={showPassword ? "text":"password"}
+        name="confirmPassword"
+        placeholder="Confirm Password"
+        value={formData.confirmPassword}
+        onChange={handleChange}
+        className="w-100 border border-gray-300 rounded-full px-5 py-3 text-sm outline-none
+        focus:border-sky-500 transition"
+/>
+        <button 
+        type="button"
+        onClick={handleShowPassword}>
+        {showPassword ? <FaEye />: <FaEyeSlash />  }</button>
+        </div>
+        </div>
+
+        <label className="mb-1 text-sm">
+        require  <span className="text-red-500">*</span>
+</label>
         <input
         type="text"
         name="handle"
@@ -127,7 +195,6 @@ return (
         className="border border-gray-300 rounded-full px-5 py-3 text-sm outline-none 
         focus:border-sky-500 transition"
 />
-
     <label
     htmlFor="avatar" 
     className="cursor-pointer border border-gray-300 rounded-full px-5 py-3 text-sm text-center 
@@ -147,13 +214,13 @@ return (
 {avatarPreview && (
     <div className="flex flex-col items-center gap-2">
     <img
-      src={avatarPreview}
-      alt="Preview"
-      className="w-20 h-20 rounded-full object-cover"
+    src={avatarPreview}
+    alt="Preview"
+    className="w-20 h-20 rounded-full object-cover"
     />
 
     <Button
-        type="Button"
+        type="button"
         onClick={handleRemoveAvatar}
         className="text-red-500 text-sm cursor-pointer"
     >

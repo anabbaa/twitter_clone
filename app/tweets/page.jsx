@@ -1,28 +1,33 @@
 "use client";
 import TwitterCard from "@/app/components/TwitterCard";
 import { useEffect, useState } from "react";
-import {getTwitterData} from "@/lib/twitterApi"
+import { getTwitterData } from "@/lib/twitterApi";
+import { useTweets } from "../context/TweetsContext";
 
 const TwitterPages = () => {
-  const [tweetsData, setTweetsData] = useState({});
-
-  console.log(typeof tweetsData)
+  const  {tweets , setTweets} = useTweets()
 
   useEffect(() => {
     async function loadData() {
       const data = await getTwitterData();
-      setTweetsData(data);
+      setTweets(data);
     }
-
     loadData();
   }, []);
 
+  const handleDelete = (deletedId) => {
+    setTweets(prev => prev.filter(item => item._id !== deletedId));
+  };
+
+
   return (
-<div>
-  {Object.values(tweetsData).map((tweet) => (
-    <TwitterCard key={tweet._id} tweet={tweet} />
-  ))}
-</div>
+    <div >
+      {tweets.map((tweet) => (
+        <TwitterCard key={tweet._id} tweet={tweet} onDelete={handleDelete} />
+      ))}
+  
+    </div>
   );
 };
-export default TwitterPages
+
+export default TwitterPages;

@@ -3,7 +3,7 @@ import { radii, shadows, sizes, variants } from "@/style/globalStyles";
 
 const Button = ({
   children,
-  variant = "primary",
+  variant = "twitter",
   size = "sm",
   rounded = "md",
   shadow = "md",
@@ -14,13 +14,13 @@ const Button = ({
 }) => {
   return (
     <button
-     className={`${variants[variant]} ${sizes[size]} ${radii[rounded]} ${shadows[shadow]} px-2 py-1 rounded ${
+    className={`${variants[variant]} ${sizes[size]} ${radii[rounded]} ${shadows[shadow]} px-2 py-1 rounded ${
   disabled ? 'bg-gray-400 cursor-not-allowed' : 'bg-blue-500 hover:bg-green-600'
 }`}
-     style={width ? { width } : undefined}
+    style={width ? { width } : undefined}
       disabled={disabled}
          {...props} //all properties of a button    
-         onClick={onClick}
+        onClick={onClick}
     >
       {children}
     </button>

@@ -1,5 +1,4 @@
 "use client"
-
 import React from "react"
 import Button from "@/app/components/Button"
 import { FaTwitter } from "react-icons/fa";

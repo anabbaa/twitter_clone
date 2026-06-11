@@ -1,11 +1,9 @@
 import { Geist, Geist_Mono } from "next/font/google";
-import Provider  from "@/app/components/Provider"
-import { TweetProvider } from "@/app/context/TweetsContext";
-
-
+import {AuthProvider} from "@/app/context/AuthContext"
+import { TweetsProvider } from "./context/TweetsContext";
 import "./globals.css";
 
-// to share UI elemnts across pages
+// to share UI elemnts across pages/
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
@@ -25,15 +23,16 @@ export default function RootLayout({ children }) {
   return (
     <html
       lang="en"
-      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
+      className={`${geistSans.variable} ${geistMono.variable} h-fill antialiased`}
     >
-      <body className="flex justify-center items-center">
-        <main className="w-[90vw]  h-[90vh] flex  justify-center">
-                  <Provider >
-                    <TweetProvider>
-                      {children}
-                    </TweetProvider>
-                  </Provider >
+      <body className="w.fill over-flow-hidden min-[330px]:w-fill
+      flex justify-center items-center">
+        <main className="w-[90vw] max-[550px]:w-fill h-[90vh] flex justify-center">       
+          <AuthProvider>
+            <TweetsProvider>
+              {children}
+              </TweetsProvider>
+              </AuthProvider>
         </main>
       </body>
     </html>

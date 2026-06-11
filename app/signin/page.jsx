@@ -1,35 +1,51 @@
 "use client";
-
-import { signIn } from "next-auth/react";
 import { useState } from "react";
+import { useRouter } from "next/navigation";
+import {useAuth} from "@/app/context/AuthContext"
 
 const Signin = () => {
-  const [siginData, setSigninData] = useState({
+
+  const {login} = useAuth()
+  const router = useRouter();
+  const [form, setForm] = useState({
     email: "",
     password: "",
-    error: "",
   });
 
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
+  
   const handleSubmit = async (e) => {
-    e.preventDefault();
+  e.preventDefault();
 
-    const res = await signIn("credentials", {
-      email: siginData.email,
-      password: siginData.password,
-      redirect: false,
+  try {
+    setLoading(true);
+    setError("");
+
+    const res = await fetch("/api/signin", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(form),
     });
-    console.log("SignIn response:", res)
 
-    if (res?.error) {
-      setSigninData((prev) => ({
-        ...prev,
-        error: "Invalid email or password",
-      }));
-    } else {
-      window.location.href = "/home";
+    const data = await res.json();
+    
+    if (!res.ok) {
+      setError(data.error);
+      return;
     }
-  };
+    await login(form.email , form.password)
+    router.push("/home");
 
+  } catch (err) {
+    setError("Username or password is invalid");
+  } finally {
+    setLoading(false);
+  }
+  
+};
   return (
     <div className="h-[80vh] flex flex-col justify-center items-center gap-4">
       <form
@@ -40,10 +56,7 @@ const Signin = () => {
           type="email"
           placeholder="Email"
           onChange={(e) =>
-            setSigninData((prev) => ({
-              ...prev,
-              email: e.target.value,
-            }))
+            setForm((prev) => ({ ...prev, email: e.target.value }))
           }
           className="border border-gray-300 rounded-full px-5 py-3 text-sm outline-none focus:border-sky-500"
         />
@@ -52,25 +65,21 @@ const Signin = () => {
           type="password"
           placeholder="Password"
           onChange={(e) =>
-            setSigninData((prev) => ({
-              ...prev,
-              password: e.target.value,
-            }))
+            setForm((prev) => ({ ...prev, password: e.target.value }))
           }
           className="border border-gray-300 rounded-full px-5 py-3 text-sm outline-none focus:border-sky-500"
         />
 
-        {siginData.error && (
-          <p className="text-red-500 text-sm text-center">
-            {siginData.error}
-          </p>
+        {error && (
+          <p className="text-red-500 text-sm text-center">{error}</p>
         )}
 
         <button
+          disabled={loading}
           type="submit"
-          className="bg-black text-white cursor-pointer rounded-full py-3 font-bold"
+          className="bg-black text-white rounded-full py-3 font-bold disabled:opacity-50"
         >
-          Sign In
+          {loading ? "Signing in..." : "Sign In"}
         </button>
       </form>
     </div>

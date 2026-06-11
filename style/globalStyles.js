@@ -52,8 +52,9 @@ export const card = {
 
 // Tailwind CSS color/style variants for buttons, badges, alerts, etc.
 export const variants = {
-  
-  primary:
+  twitter:
+"bg-[#1DA1F2] hover:bg-[#1a8cd8] text-white font-bold px-10  flex-end rounded-full transition",
+primary:
   "bg-[#1DA1F2] text-white hover:bg-[#1a8cd8] focus:ring-[#1DA1F2] rounded-lg px-4 py-2 sm:px-5 sm:py-3 text-sm sm:text-base transition-colors duration-200 ease-in-out shadow-sm cursor-pointer",
 
     secondary:
