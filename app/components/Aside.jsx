@@ -58,7 +58,8 @@ return (
     <div className=" flex flex-col gap-3 pt-3 border-t border-gray-800">
 
     <Button
-        className=" bg-[#1DA1F2] hover:bg-[#1a8cd8] text-white font-bold w-full py-2 rounded-full
+    onClick={() => router.push("/tweets")}  
+    className=" bg-[#1DA1F2] hover:bg-[#1a8cd8] text-white font-bold w-full py-2 rounded-full
         text-sm"
     >
         Tweets
