@@ -39,7 +39,7 @@ return (
             flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-gray-800 cursor-pointer transition"
             onClick={() => {
             if (item.main === "Profile") router.push("/profile");
-            if (item.main === "Home") router.push("/home");
+            if (item.main === "Home") router.push("/");
             }}
         >
             <span className="text-xl flex-shrink-0">
