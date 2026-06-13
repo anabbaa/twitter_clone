@@ -3,6 +3,18 @@ import jwt from "jsonwebtoken";
 import bcrypt from "bcryptjs";
 import User from "@/lib/models/User";
 import { connectDB } from "@/lib/mongoose";
+{/*
+  Email + Password
+        ↓
+Check database
+        ↓
+Verify password
+        ↓
+Create JWT token
+        ↓
+Store token in cookie
+
+*/}
 
 export async function POST(req) {
   try {

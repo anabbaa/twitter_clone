@@ -2,6 +2,18 @@ import { NextResponse } from "next/server";
 import User from "@/lib/models/User";
 import { connectDB } from "@/lib/mongoose";
 import { verifyAuth } from "@/lib/auth/auth";
+{/*
+Browser sends cookie
+        ↓
+Verify JWT token
+        ↓
+Get user ID from token
+        ↓
+Load user from database
+        ↓
+Return user data
+*/}
+
 
 export async function GET(req) {
   try {

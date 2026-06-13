@@ -26,7 +26,7 @@ export async function GET() {
 
 export async function POST(req) {
   await connectDB();
-
+// with poupilatee we identify owner , display user info , avoid extra queries
   try {
     const formData = await req.formData();
     const author = formData.get("author");

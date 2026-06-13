@@ -69,7 +69,6 @@ const AddTweet = () => {
           rows={8}
           cols={66}
         />
-        
 
         {media.length > 0 && (
           <div className="flex flex-wrap gap-2 mt-2">
@@ -91,16 +90,16 @@ const AddTweet = () => {
 
         {showEmoji && (
           <div className="flex flex-wrap gap-1 bg-gray-900 p-2 mt-2 rounded">
-            {EMOJIS.map((e) => (
-              <button key={e} onClick={() => insertEmoji(e)} className="text-xl">{e}</button>
+            {EMOJIS.map((e, i) => (
+              <button key={i} onClick={() => insertEmoji(e)} className="text-xl">{e}</button>
             ))}
           </div>
         )}
 
         {showGif && (
           <div className="flex flex-wrap gap-2 bg-gray-900 p-2 mt-2 rounded">
-            {GIFS.map((url) => (
-              <img key={url} src={url} onClick={() => addGif(url)} className="w-24 h-16 cursor-pointer rounded" alt="gif" />
+            {GIFS.map((url , i) => (
+              <img key={i} src={url} onClick={() => addGif(url)} className="w-24 h-16 cursor-pointer rounded" alt="gif" />
             ))}
           </div>
         )}
@@ -108,6 +107,7 @@ const AddTweet = () => {
 
       <div className="flex justify-between items-center">
         <div className="flex gap-3 text-sky-500 text-2xl">
+          {/*clicks()* to let user to click on hiddenn */}
           <button onClick={() => imgRef.current?.click()}><IoImageOutline /></button>
           <input ref={imgRef} type="file" accept="image/*" multiple hidden onChange={handleImages} />
 
