@@ -25,7 +25,9 @@ const [error, setError] = useState("")
 const handleAvatarChange = (e) => {
     const file = e.target.files?.[0];
     if (!file) return;
+    // state to add file to it to upload
     setAvatarFile(file);
+    //state to creat a url to a selected file
     setAvatarPreview(URL.createObjectURL(file));
 };
 
@@ -77,7 +79,6 @@ try {
     if (avatarFile) {
     data.append("avatar", avatarFile);
 }
-    if (avatarFile)  data.append("avatar", avatarFile);
         
     const res = await fetch("/api/signup", {
         method: "POST",

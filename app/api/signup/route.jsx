@@ -63,10 +63,14 @@ if (existing) {
   }
 }
     // handle avatar upload
+    // create a variable to store the final image URL.
     let avatarUrl = "";
 
     if (avatar && typeof avatar === "object") {
+      //Converts the uploaded file into raw binary data (ArrayBuffer
       const bytes = await avatar.arrayBuffer();
+     // Node.js uses Buffer to handle binary data
+//This converts browser-style data into something Node can write to disk
       const buffer = Buffer.from(bytes);
 
       const fileName = `${Date.now()}-${avatar.name}`;
