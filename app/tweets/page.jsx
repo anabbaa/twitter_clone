@@ -1,6 +1,6 @@
 "use client";
 import TwitterCard from "@/app/components/TwitterCard";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { getTwitterData } from "@/lib/twitterApi";
 import { useTweets } from "../context/TweetsContext";
 

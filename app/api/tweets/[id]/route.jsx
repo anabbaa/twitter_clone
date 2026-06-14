@@ -81,6 +81,7 @@ export async function PATCH(req, { params }) {
         );
 
         // make sure uploads folder exists
+        //mkdir make anew folder but recrusive true if exist did not create if not create
         await mkdir(path.join(process.cwd(), "public/uploads"), { recursive: true });
 
         await writeFile(filePath, buffer);

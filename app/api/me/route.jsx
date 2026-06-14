@@ -17,8 +17,8 @@ Return user data
 
 export async function GET(req) {
   try {
-      const decoded = verifyAuth(req);
-        await connectDB();
+    const decoded = verifyAuth(req);    
+    await connectDB();
 
     // select user without his password
     const user = await User.findById(decoded.id).select("-password");

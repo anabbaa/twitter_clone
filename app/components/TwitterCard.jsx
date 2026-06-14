@@ -35,9 +35,12 @@ const TwitterCard = ({ tweet: tweetProp, onDelete }) => {
       formData.append("content", text);
 
       // new files the user added
+      //we use if here because we want to get file from our devices because old ones
+      //in db has no prop keys file has only url and type
       media.forEach((m) => { if (m.file) formData.append("media", m.file); });
 
       // existing media to keep
+      //first we filter get array which has no file key so it is in our DB
       const kept = media.filter((m) => !m.file).map((m) => m.url);
       formData.append("keptMedia", JSON.stringify(kept));
 
@@ -86,8 +89,7 @@ const TwitterCard = ({ tweet: tweetProp, onDelete }) => {
       }));
     }
   };
-  // add vid views 
-
+  // delete tweet
   const handleDelete = async () => {
     const res = await fetch(`/api/tweets/${tweet._id}`, { method: "DELETE" });
     if (res.ok) onDelete(tweet._id);
